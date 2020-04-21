@@ -4,14 +4,19 @@
 namespace RusinovArtem\LineChunker;
 
 
-class LineChanker
+class LineChunker
 {
     protected $fd;
     protected $file;
     protected $bufSize = 10000;
+    protected $delimiter = PHP_EOL;
+    protected $delimiterLen = 1;
 
-    public function __construct($file, $bufSize=10000)
+    public function __construct($file, $bufSize=10000, $delimiter = PHP_EOL)
     {
+        $this->bufSize = $bufSize;
+        $this->delimiter = $delimiter;
+        $this->delimiterLen = strlen($this->delimiter);
         $this->fd = fopen($file, 'r');
     }
 
@@ -28,24 +33,23 @@ class LineChanker
                 $eof = true;
             }
 
-            $lastEOLat = strrpos( $buffer, PHP_EOL);
+            $lastEOLat = strrpos( $buffer, $this->delimiter);
             if(false === $lastEOLat){
                 if($eof){
                     $func(trim($buffer));
-                    return;
+                    break;
                 }
                 else{
                     continue;
                 }
             }
 
-            while(false !== ($eolPos = strpos( $buffer, PHP_EOL))){
+            while(false !== ($eolPos = strpos( $buffer, $this->delimiter))){
                 $line = substr($buffer,  0, $eolPos );
-                $buffer = substr($buffer, $eolPos+1);
-                if ($func(trim($line)) === false) return ;
+                $buffer = substr($buffer, $eolPos+$this->delimiterLen);
+                if ($func(trim($line)) === false) break ;
             }
-        }
-        while(true);
+        } while(true);
     }
 
     public function __destruct()
