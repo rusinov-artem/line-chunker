@@ -1,0 +1,14 @@
+{
+    "name": "rusinov-artem/line-chunker",
+    "type": "library",
+    "require-dev": {
+        "phpunit/phpunit": "^9.1"
+    },
+    "authors": [
+        {
+            "name": "RusinovArtem",
+            "email": "rusinov.dev@gmail.com"
+        }
+    ],
+    "require": {}
+}
