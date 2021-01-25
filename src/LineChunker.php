@@ -36,8 +36,8 @@ class LineChunker
             $lastEOLat = strrpos( $buffer, $this->delimiter);
             if(false === $lastEOLat){
                 if($eof){
-                    $func(trim($buffer));
-                    break;
+                    if(!empty($buffer)) $func($buffer);
+                    return;
                 }
                 else{
                     continue;
@@ -47,7 +47,7 @@ class LineChunker
             while(false !== ($eolPos = strpos( $buffer, $this->delimiter))){
                 $line = substr($buffer,  0, $eolPos );
                 $buffer = substr($buffer, $eolPos+$this->delimiterLen);
-                if ($func(trim($line)) === false) break ;
+                if ($func(trim($line)) === false) return;
             }
         } while(true);
     }

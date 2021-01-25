@@ -19,7 +19,7 @@ class LineChunkerTest extends TestCase
         $chunker->chunk(function ($line)use(&$result){
             $result[] = $line;
         });
-        static::assertEquals(3, count($result));
+        static::assertCount(4, $result);
     }
     public function testWorkingCorrectOnLowBuffer()
     {
@@ -28,7 +28,7 @@ class LineChunkerTest extends TestCase
         $chunker->chunk(function ($line)use(&$result){
             $result[] = $line;
         });
-        static::assertEquals(3, count($result));
+        static::assertCount(4, $result);
     }
     public function testOtherDelimiter()
     {
@@ -37,6 +37,16 @@ class LineChunkerTest extends TestCase
         $chunker->chunk(function ($line)use(&$result){
             $result[] = $line;
         });
-        static::assertEquals(4, count($result));
+        static::assertCount(3, $result);
+    }
+
+    public function testReturnOnFalse(){
+        $chunker = new LineChunker(__DIR__.'/example.log', 3, '<br>');
+        $result = [];
+        $chunker->chunk(function ($line)use(&$result){
+            $result[] = $line;
+            return false;
+        });
+        static::assertCount(1, $result);
     }
 }
