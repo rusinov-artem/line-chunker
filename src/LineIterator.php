@@ -18,7 +18,7 @@ class LineIterator implements \Iterator
     protected int $lineNumber = 0;
     protected bool $valid = true;
 
-    public function __construct($file, $bufSize=10000, $delimiter = PHP_EOL)
+    public function __construct($file, $bufSize = 10000, $delimiter = PHP_EOL)
     {
         $this->file = $file;
         $this->bufSize = $bufSize;
@@ -35,29 +35,29 @@ class LineIterator implements \Iterator
 
     protected function fillBuffer(): int
     {
-        while(!feof($this->fd)){
+        while (!feof($this->fd)) {
             $this->buffer .= fread($this->fd, $this->bufSize);
-            $eolPos = strpos( $this->buffer, $this->delimiter);
-            if(false !== $eolPos) return $eolPos;
+            $eolPos = strpos($this->buffer, $this->delimiter);
+            if (false !== $eolPos) return $eolPos;
         }
         return strlen($this->buffer);
     }
 
     public function next()
     {
-        if(empty($this->buffer)){
+        if (empty($this->buffer)) {
             $this->buffer .= fread($this->fd, $this->bufSize);
         }
 
-        $eolPos = strpos( $this->buffer, $this->delimiter);
+        $eolPos = strpos($this->buffer, $this->delimiter);
 
-        if(false === $eolPos ){
+        if (false === $eolPos) {
             $eolPos = $this->fillBuffer();
         }
 
-        if(empty($this->buffer)) $this->valid = false;
-        $this->current = substr($this->buffer,  0, $eolPos );
-        $this->buffer = substr($this->buffer, $eolPos+$this->delimiterLen);
+        if (empty($this->buffer)) $this->valid = false;
+        $this->current = substr($this->buffer, 0, $eolPos);
+        $this->buffer = substr($this->buffer, $eolPos + $this->delimiterLen);
     }
 
     public function key()
@@ -72,7 +72,7 @@ class LineIterator implements \Iterator
 
     public function rewind()
     {
-        if(is_resource($this->fd)){
+        if (is_resource($this->fd)) {
             fclose($this->fd);
         }
 
@@ -85,7 +85,7 @@ class LineIterator implements \Iterator
 
     public function __destruct()
     {
-        if(is_resource($this->fd)){
+        if (is_resource($this->fd)) {
             fclose($this->fd);
         }
     }

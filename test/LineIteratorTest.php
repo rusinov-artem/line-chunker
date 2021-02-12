@@ -35,4 +35,13 @@ class LineIteratorTest extends TestCase
         static::assertCount(3, $result);
     }
 
+    public function testGenerator(){
+        $chunker = new RusinovArtem\LineChunker\LineChunker(__DIR__.'/example.log', 3, '<br>');
+        $result = [];
+        foreach ($chunker as $line){
+            $result[] = $line;
+        }
+        static::assertCount(3, $result);
+    }
+
 }
