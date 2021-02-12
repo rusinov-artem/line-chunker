@@ -3,17 +3,18 @@
 
 namespace RusinovArtem\LineChunker;
 
-
 class LineChunker
 {
     protected $fd;
-    protected $file;
-    protected $bufSize = 10000;
-    protected $delimiter = PHP_EOL;
-    protected $delimiterLen = 1;
+    protected string $file;
+    protected int $bufSize = 10000;
+    protected string $delimiter = PHP_EOL;
+    protected int $delimiterLen = 1;
+    protected string $buffer = '';
 
     public function __construct($file, $bufSize=10000, $delimiter = PHP_EOL)
     {
+        $this->file = $file;
         $this->bufSize = $bufSize;
         $this->delimiter = $delimiter;
         $this->delimiterLen = strlen($this->delimiter);
@@ -54,6 +55,9 @@ class LineChunker
 
     public function __destruct()
     {
-        fclose($this->fd);
+        if(is_resource($this->fd)){
+            fclose($this->fd);
+        }
     }
+
 }

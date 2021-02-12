@@ -1,7 +1,5 @@
 <?php
 
-namespace RusinovArtem\LineChunker\test;
-
 use PHPUnit\Framework\TestCase;
 use RusinovArtem\LineChunker\LineChunker;
 
@@ -49,4 +47,5 @@ class LineChunkerTest extends TestCase
         });
         static::assertCount(1, $result);
     }
+
 }
